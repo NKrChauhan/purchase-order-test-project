@@ -14,10 +14,15 @@ class PurchaseOrderAPIView(APIView):
         """
         query_params = request.query_params
         # If Id is given in the url then that will take the precedence over the query_params
-        if purchase_order_id:
-            response_data = self.purchase_order_service.get_by_id(purchase_order_id=purchase_order_id)
-        elif query_params:
-            response_data = self.purchase_order_service.get_by_query_params(query_params=query_params)
+        try:
+            if purchase_order_id:
+                response_data = self.purchase_order_service.get_by_id(purchase_order_id=purchase_order_id)
+            elif query_params:
+                response_data = self.purchase_order_service.get_by_query_params(query_params=query_params)
+            else:
+                response_data = {"message": "no parameter given: need purchase_order_id or a query_param"}
+        except Exception as e:
+            return Response(status=400, data=e.__dict__)
         return Response(status=200, data=response_data)
 
     def post(self, request):
