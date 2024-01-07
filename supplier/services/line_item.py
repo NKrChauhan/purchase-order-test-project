@@ -4,7 +4,21 @@ from ..serializers.line_items import LineItemSerializer
 
 
 class LineItemService:
+    """
+        Service class to handle operations related to LineItem instances in Purchase Orders.
+
+        Methods:
+        - create_all_line_items_for_purchase_order(line_items, purchase_order)
+        - create_line_item_for_purchase_order(line_item, purchase_order)
+        - get_items_for_purchase_order(purchase_order)
+        - update_all_line_items_for_purchase_order(line_items, purchase_order)
+        - update_line_item_for_purchase_order_by_id(line_item_id, purchase_order, line_item)
+        - delete_deprecated_line_items_for_purchase_order(valid_line_item_ids, purchase_order)
+    """
     def create_all_line_items_for_purchase_order(self, line_items, purchase_order):
+        """
+        Creates LineItem instances for a Purchase Order.
+        """
         # Optimisation: We can insert via .bulk_create() as well
         line_items_objects = []
         for line_item in line_items:
@@ -13,6 +27,9 @@ class LineItemService:
         return serialized_line_items.data
 
     def create_line_item_for_purchase_order(self, line_item, purchase_order):
+        """
+        Creates a LineItem for a Purchase Order.
+        """
         line_item = LineItem.objects.create(
             item_name=line_item["item_name"],
             quantity=line_item["quantity"],
@@ -24,11 +41,17 @@ class LineItemService:
         return line_item
 
     def get_items_for_purchase_order(self, purchase_order):
+        """
+        Retrieves LineItems for a specific Purchase Order.
+        """
         line_items = LineItem.objects.filter(purchase_order=purchase_order)
         serialized_line_items = LineItemSerializer(line_items, many=True)
         return serialized_line_items.data
 
     def update_all_line_items_for_purchase_order(self, line_items, purchase_order):
+        """
+        Updates LineItems for a Purchase Order.
+        """
         valid_line_items_for_purchase_order = []
         updated_line_items = []
         for line_item in line_items:
@@ -54,6 +77,9 @@ class LineItemService:
         return serialized_line_items.data
 
     def update_line_item_for_purchase_order_by_id(self, line_item_id, purchase_order, line_item):
+        """
+        Updates a LineItem by ID.
+        """
         try:
             line_item_object = LineItem.objects.get(purchase_order=purchase_order, id=line_item_id)
         except LineItem.DoesNotExist:
@@ -67,6 +93,9 @@ class LineItemService:
         return line_item_object
 
     def delete_deprecated_line_items_for_purchase_order(self, valid_line_item_ids, purchase_order):
+        """
+        Deletes deprecated LineItems.
+        """
         deprecated_line_items = LineItem.objects.filter(purchase_order=purchase_order).exclude(id__in=valid_line_item_ids)
         if deprecated_line_items.exists():
             deprecated_line_items.delete()
