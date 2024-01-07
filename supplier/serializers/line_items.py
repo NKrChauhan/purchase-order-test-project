@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 
 class LineItemSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     item_name = serializers.CharField()
     quantity = serializers.IntegerField()
     price_without_tax = serializers.DecimalField(max_digits=10, decimal_places=2)

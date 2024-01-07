@@ -50,7 +50,7 @@ class LineItemService:
             valid_line_item_ids=valid_line_items_for_purchase_order,
             purchase_order=purchase_order
         )
-        serialized_line_items = LineItemSerializer(line_items, many=True)
+        serialized_line_items = LineItemSerializer(updated_line_items, many=True)
         return serialized_line_items.data
 
     def update_line_item_for_purchase_order_by_id(self, line_item_id, purchase_order, line_item):
@@ -68,4 +68,5 @@ class LineItemService:
 
     def delete_deprecated_line_items_for_purchase_order(self, valid_line_item_ids, purchase_order):
         deprecated_line_items = LineItem.objects.filter(purchase_order=purchase_order).exclude(id__in=valid_line_item_ids)
-        deprecated_line_items.delete()
+        if deprecated_line_items.exists():
+            deprecated_line_items.delete()
