@@ -5,7 +5,7 @@ from order.api_services.purchase_order import PurchaseOrderAPIService
 
 
 class PurchaseOrderAPIView(APIView):
-    purchase_order_service = PurchaseOrderAPIService()
+    purchase_order_api_service = PurchaseOrderAPIService()
 
     def get(self, request, purchase_order_id=None):
         """
@@ -16,9 +16,9 @@ class PurchaseOrderAPIView(APIView):
         # If Id is given in the url then that will take the precedence over the query_params
         try:
             if purchase_order_id:
-                response_data = self.purchase_order_service.get_by_id(purchase_order_id=purchase_order_id)
+                response_data = self.purchase_order_api_service.get_by_id(purchase_order_id=purchase_order_id)
             elif query_params:
-                response_data = self.purchase_order_service.get_by_query_params(query_params=query_params)
+                response_data = self.purchase_order_api_service.get_by_query_params(query_params=query_params)
             else:
                 response_data = {"message": "no parameter given: need purchase_order_id or a query_param"}
         except Exception as e:
@@ -47,7 +47,7 @@ class PurchaseOrderAPIView(APIView):
         """
         request_data = request.data
         try:
-            saved_purchase_order_data = self.purchase_order_service.create(data=request_data)
+            saved_purchase_order_data = self.purchase_order_api_service.create(data=request_data)
         except Exception as e:
             return Response(status=400, data=e.__dict__)
         return Response(status=201, data=saved_purchase_order_data)
@@ -84,7 +84,7 @@ class PurchaseOrderAPIView(APIView):
         request_data = request.data
         if purchase_order_id:
             try:
-                updated_purchase_data = self.purchase_order_service.update(purchase_order_id=purchase_order_id, data=request_data)
+                updated_purchase_data = self.purchase_order_api_service.update(purchase_order_id=purchase_order_id, data=request_data)
             except Exception as e:
                 return Response(status=400, data=e.__dict__)
         else:
@@ -97,7 +97,7 @@ class PurchaseOrderAPIView(APIView):
         """
         if purchase_order_id:
             try:
-                self.purchase_order_service.delete_by_id(purchase_order_id=purchase_order_id)
+                self.purchase_order_api_service.delete_by_id(purchase_order_id=purchase_order_id)
             except Exception as e:
                 return Response(status=400, data=e.__dict__)
         else:
