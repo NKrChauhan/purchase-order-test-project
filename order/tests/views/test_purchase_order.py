@@ -130,7 +130,7 @@ class PurchaseOrderViewTest(APITestCase):
         response_data = response.data
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_data["message"], "Purchase id not found for id 10")
+        self.assertEqual(response_data["message"], "Purchase id not found for id 9999")
 
     def test_purchase_order_update_request_with_valid_data(self):
         pass
