@@ -20,7 +20,8 @@ class PurchaseOrderAPIView(APIView):
             elif query_params:
                 response_data = self.purchase_order_api_service.get_by_query_params(query_params=query_params)
             else:
-                response_data = {"message": "no parameter given: need purchase_order_id or a query_param"}
+                # if there is no purchase_order_id or query_params provided then return all purchase orders list
+                response_data = self.purchase_order_api_service.get_all_purchase_orders()
         except Exception as e:
             return Response(status=400, data=e.__dict__)
         return Response(status=200, data=response_data)

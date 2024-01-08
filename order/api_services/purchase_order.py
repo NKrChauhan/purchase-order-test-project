@@ -128,10 +128,21 @@ class PurchaseOrderAPIService:
             )
         elif supplier_name:
             purchase_orders = self.purchase_order_service.get_purchase_orders_by_supplier_name(supplier_name)
-        elif item_name:
-            purchase_orders = self.purchase_order_service.get_purchase_orders_by_item_name(item_name)
         else:
-            purchase_orders = self.purchase_order_service.get_all_purchase_orders()
+            purchase_orders = self.purchase_order_service.get_purchase_orders_by_item_name(item_name)
+        for purchase_order in purchase_orders:
+            line_items = self.line_item_service.get_items_for_purchase_order(purchase_order)
+            response_data.append(
+                {
+                    **PurchaseOrderSerialzier(purchase_order).data,
+                    "line_items": line_items,
+                }
+            )
+        return response_data
+
+    def get_all_purchase_orders(self):
+        response_data = []
+        purchase_orders = self.purchase_order_service.get_all_purchase_orders()
         for purchase_order in purchase_orders:
             line_items = self.line_item_service.get_items_for_purchase_order(purchase_order)
             response_data.append(
