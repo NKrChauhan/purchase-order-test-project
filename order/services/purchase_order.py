@@ -156,7 +156,7 @@ class PurchaseOrderService:
         Extracts Supplier data from a request.
         """
         supplier_data = data.get("supplier")
-        supplier_data["supplier_id"] = data.get("id", None)
+        supplier_data["supplier_id"] = supplier_data.get("id", None)
         supplier_data.pop("id", None)
         return supplier_data
 
