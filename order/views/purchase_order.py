@@ -1,11 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..services.purchase_order import PurchaseOrderService
+from order.api_services.purchase_order import PurchaseOrderAPIService
 
 
 class PurchaseOrderAPIView(APIView):
-    purchase_order_service = PurchaseOrderService()
+    purchase_order_service = PurchaseOrderAPIService()
 
     def get(self, request, purchase_order_id=None):
         """

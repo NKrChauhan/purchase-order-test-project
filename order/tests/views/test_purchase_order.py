@@ -109,12 +109,12 @@ class PurchaseOrderViewTest(APITestCase):
 
     def test_purchase_order_get_request_by_invalid_id(self):
         response = self.client.get(
-            path=reverse('purchase_order_creation')+'10/'
+            path=reverse('purchase_order_creation')+'9999/'
         )
         response_data = response.data
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_data["message"], "Purchase id not found for id 10")
+        self.assertEqual(response_data["message"], "Purchase id not found for id 100")
 
     def test_purchase_order_delete_request_by_id(self):
         response = self.client.delete(
@@ -124,10 +124,22 @@ class PurchaseOrderViewTest(APITestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_purchase_order_delete_request_by_invalid_id(self):
-        response = self.client.get(
-            path=reverse('purchase_order_creation')+'10/'
+        response = self.client.delete(
+            path=reverse('purchase_order_creation')+'9999/'
         )
         response_data = response.data
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response_data["message"], "Purchase id not found for id 10")
+
+    def test_purchase_order_update_request_with_valid_data(self):
+        pass
+
+    def test_purchase_order_update_request_with_invalid_purchase_id(self):
+        pass
+
+    def test_get_purchase_order_with_supplier_name_query_param(self):
+        pass
+
+    def test_get_purchase_order_with_line_item_name_query_param(self):
+        pass
