@@ -114,7 +114,7 @@ class PurchaseOrderViewTest(APITestCase):
         )
         response_data = response.data
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data["error"], "Purchase id not found for id 9999")
 
     def test_purchase_order_delete_request_by_id(self):
@@ -130,7 +130,7 @@ class PurchaseOrderViewTest(APITestCase):
         )
         response_data = response.data
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data["error"], "Purchase id not found for id 9999")
 
     def test_purchase_order_update_request_with_invalid_purchase_id(self):
@@ -166,7 +166,7 @@ class PurchaseOrderViewTest(APITestCase):
         )
         response_data = response.data
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data["error"], "Purchase id not found for id 999")
 
     def test_purchase_order_update_request_with_valid_data(self):

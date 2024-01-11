@@ -112,7 +112,7 @@ GET /purchase/orders/
 ```
 
 ---
-## Scope of improvements
+## Scope of improvements and enhancements
 - API Exception handling 
   - The current setup only returns 400 as bad request but rather it can further classified down to 404 with specific error messages
 - Testing

@@ -2,6 +2,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from order.api_services.purchase_order import PurchaseOrderAPIService
+from order.exceptions import PurchaseOrderNotFound
+from supplier.exceptions import LineItemNotFound
 
 
 class PurchaseOrderAPIView(APIView):
@@ -22,6 +24,10 @@ class PurchaseOrderAPIView(APIView):
             else:
                 # if there is no purchase_order_id or query_params provided then return all purchase orders list
                 response_data = self.purchase_order_api_service.get_all_purchase_orders()
+        except PurchaseOrderNotFound as e:
+            return Response(status=404, data=e.__dict__)
+        except LineItemNotFound as e:
+            return Response(status=404, data=e.__dict__)
         except Exception as e:
             return Response(status=400, data=e.__dict__)
         return Response(status=200, data=response_data)
@@ -86,6 +92,10 @@ class PurchaseOrderAPIView(APIView):
         if purchase_order_id:
             try:
                 updated_purchase_data = self.purchase_order_api_service.update(purchase_order_id=purchase_order_id, data=request_data)
+            except PurchaseOrderNotFound as e:
+                return Response(status=404, data=e.__dict__)
+            except LineItemNotFound as e:
+                return Response(status=404, data=e.__dict__)
             except Exception as e:
                 return Response(status=400, data=e.__dict__)
         else:
@@ -99,6 +109,8 @@ class PurchaseOrderAPIView(APIView):
         if purchase_order_id:
             try:
                 self.purchase_order_api_service.delete_by_id(purchase_order_id=purchase_order_id)
+            except PurchaseOrderNotFound as e:
+                return Response(status=404, data=e.__dict__)
             except Exception as e:
                 return Response(status=400, data=e.__dict__)
         else:
