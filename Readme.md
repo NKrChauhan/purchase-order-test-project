@@ -13,6 +13,12 @@ docker compose up
 
 ## CURLS for testing APIs
 
+### DRF Spectacular docs
+Go to the following url after running the server
+```bash
+  http://0.0.0.0:8000/docs/
+```
+
 ### Create purchase order
 POST /purchase/orders/
 ```bash
@@ -113,8 +119,6 @@ GET /purchase/orders/
 
 ---
 ## Scope of improvements and enhancements
-- API Exception handling 
-  - The current setup only returns 400 as bad request but rather it can further classified down to 404 with specific error messages
 - Testing
   - In current codebase set up the unittests are written for views. 
   - tests for each service and api service can be added with even more test case scenarios.
